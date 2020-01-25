@@ -16,7 +16,7 @@ import thinkstats2
 import thinkplot
 
 
-def MakeHists(live):
+def make_hists(live):
     """Plot Hists for live births
 
     live: DataFrame
@@ -34,12 +34,12 @@ def MakeHists(live):
     thinkplot.SubPlot(2)
     thinkplot.Pmf(hist)
 
-    thinkplot.Save(root='probability_agepreg_hist', 
+    thinkplot.Save(root='probability_agepreg_hist',
                    xlabel='years',
                    axis=[0, 45, 0, 700])
 
 
-def MakeFigures(firsts, others):
+def make_figures(firsts, others):
     """Plot Pmfs of pregnancy length.
 
     firsts: DataFrame
@@ -81,7 +81,7 @@ def MakeFigures(firsts, others):
                    legend=False)
 
 
-def BiasPmf(pmf, label=''):
+def bias_pmf(pmf, label=''):
     """Returns the Pmf with oversampling proportional to value.
 
     If pmf is the distribution of true values, the result is the
@@ -101,12 +101,12 @@ def BiasPmf(pmf, label=''):
 
     for x, p in pmf.Items():
         new_pmf.Mult(x, x)
-        
+
     new_pmf.Normalize()
     return new_pmf
 
 
-def UnbiasPmf(pmf, label=''):
+def unbias_pmf(pmf, label=''):
     """Returns the Pmf with oversampling proportional to 1/value.
 
     Args:
@@ -119,31 +119,31 @@ def UnbiasPmf(pmf, label=''):
     new_pmf = pmf.Copy(label=label)
 
     for x, p in pmf.Items():
-        new_pmf.Mult(x, 1.0/x)
-        
+        new_pmf.Mult(x, 1.0 / x)
+
     new_pmf.Normalize()
     return new_pmf
 
 
-def ClassSizes():
+def class_sizes():
     """Generate PMFs of observed and actual class size.
     """
     # start with the actual distribution of class sizes from the book
-    d = { 7: 8, 12: 8, 17: 14, 22: 4, 
-          27: 6, 32: 12, 37: 8, 42: 3, 47: 2 }
+    d = {7: 8, 12: 8, 17: 14, 22: 4,
+         27: 6, 32: 12, 37: 8, 42: 3, 47: 2}
 
     # form the pmf
     pmf = thinkstats2.Pmf(d, label='actual')
     print('mean', pmf.Mean())
     print('var', pmf.Var())
-    
+
     # compute the biased pmf
-    biased_pmf = BiasPmf(pmf, label='observed')
+    biased_pmf = bias_pmf(pmf, label='observed')
     print('mean', biased_pmf.Mean())
     print('var', biased_pmf.Var())
 
     # unbias the biased pmf
-    unbiased_pmf = UnbiasPmf(biased_pmf, label='unbiased')
+    unbiased_pmf = unbias_pmf(biased_pmf, label='unbiased')
     print('mean', unbiased_pmf.Mean())
     print('var', unbiased_pmf.Var())
 
@@ -158,10 +158,10 @@ def ClassSizes():
  
 def main(script):
     live, firsts, others = first.MakeFrames()
-    MakeFigures(firsts, others)
-    MakeHists(live)
+    make_figures(firsts, others)
+    make_hists(live)
 
-    ClassSizes()
+    class_sizes()
 
 
 if __name__ == '__main__':
